@@ -1,0 +1,36 @@
+package conversortdemoneda;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class MainWindow extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private JButton currencyButton, temperatureButton;
+
+    public MainWindow() {
+        this.setTitle("Conversor");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new FlowLayout());
+        this.setSize(300, 200);
+
+        // Botones para seleccionar el tipo de conversión
+        currencyButton = new JButton("Conversor de Divisas");
+        temperatureButton = new JButton("Conversor de Temperaturas");
+
+        // Agregar botones a la ventana
+        this.add(currencyButton);
+        this.add(temperatureButton);
+
+        // Configurar eventos de botones
+        currencyButton.addActionListener(e -> new CurrencyWindow(this));
+        temperatureButton.addActionListener(e -> new TemperatureWindow(this));
+
+        this.setVisible(true);
+    }
+
+    // Método para mostrar la ventana principal y ocultar las otras
+    public void showMainWindow() {
+        this.setVisible(true);
+    }
+}

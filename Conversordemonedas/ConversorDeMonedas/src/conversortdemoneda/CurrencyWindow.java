@@ -1,0 +1,116 @@
+package conversortdemoneda;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class CurrencyWindow extends JFrame {
+    private static final long serialVersionUID = 1L;
+    private CurrencyConverter converter = new CurrencyConverter();
+    private JTextField inputField;
+    private JComboBox<String> conversionType;
+    private JLabel resultLabel;
+
+    // Agregamos una referencia a la ventana principal
+    private MainWindow mainWindow;
+
+    public CurrencyWindow(MainWindow mainWindow) {
+        this.setTitle("Convertidor de Divisas");
+        this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        this.setLayout(new FlowLayout());
+        this.setSize(300, 200);
+        this.mainWindow = mainWindow;
+
+        // Componentes del UI
+        inputField = new JTextField(10);
+        String[] conversionOptions = { "MXN a USD", "MXN a EUR", "MXN a GBP", "MXN a JPY", "MXN a KRW", "USD a MXN", "EUR a MXN", "GBP a MXN", "JPY a MXN", "KRW a MXN" };
+        conversionType = new JComboBox<>(conversionOptions);
+        JButton convertButton = new JButton("Convertir");
+        resultLabel = new JLabel("Resultado: ");
+
+        // Crear botones "Inicio" y "Cerrar"
+        JButton homeButton = new JButton("Inicio");
+        JButton closeButton = new JButton("Cerrar");
+
+        // Agregar componentes a la ventana
+        this.add(inputField);
+        this.add(conversionType);
+        this.add(convertButton);
+        this.add(resultLabel);
+        this.add(homeButton);
+        this.add(closeButton);
+
+        // Configurar el evento del botón
+        convertButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String inputText = inputField.getText();
+                try {
+                    double inputValue = Double.parseDouble(inputText);
+                    double result;
+
+                    // Realizar la conversión
+                    switch (conversionType.getSelectedItem().toString()) {
+                        case "MXN a USD":
+                            result = converter.mxnToUsd(inputValue);
+                            break;
+                        case "MXN a EUR":
+                            result = converter.mxnToEur(inputValue);
+                            break;
+                        case "MXN a GBP":
+                            result = converter.mxnToGbp(inputValue);
+                            break;
+                        case "MXN a JPY":
+                            result = converter.mxnToJpy(inputValue);
+                            break;
+                        case "MXN a KRW":
+                            result = converter.mxnToKrw(inputValue);
+                            break;
+                        case "USD a MXN":
+                            result = converter.usdToMxn(inputValue);
+                            break;
+                        case "EUR a MXN":
+                            result = converter.eurToMxn(inputValue);
+                            break;
+                        case "GBP a MXN":
+                            result = converter.gbpToMxn(inputValue);
+                            break;
+                        case "JPY a MXN":
+                            result = converter.jpyToMxn(inputValue);
+                            break;
+                        case "KRW a MXN":
+                            result = converter.krwToMxn(inputValue);
+                            break;
+                        default:
+                            throw new IllegalArgumentException("Tipo de conversión no soportado.");
+                    }
+
+                    // Mostrar el resultado
+                    resultLabel.setText("Resultado: " + result);
+                } catch (NumberFormatException ex) {
+                    // Manejar el caso en que el input no es un número
+                    JOptionPane.showMessageDialog(CurrencyWindow.this,
+                        "Por favor, ingresa un número válido.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Configurar eventos de botones
+        homeButton.addActionListener(e -> {
+            this.setVisible(false);
+            mainWindow.showMainWindow();
+        });
+
+        closeButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this,
+                "Gracias por Usar mi Programa. ¡Vuelve pronto!",
+                "Hasta luego",
+                JOptionPane.INFORMATION_MESSAGE);
+            System.exit(0);
+        });
+
+        this.setVisible(true);
+    }
+}
